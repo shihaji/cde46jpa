@@ -1,5 +1,6 @@
 package com.cts;
 
+import java.util.Arrays;
 import java.util.Date;
 
 import javax.persistence.EntityManager;
@@ -13,9 +14,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		
-		
-		
+				
 		EntityManagerFactory emf=Persistence.createEntityManagerFactory("my-persistence");
 	
 		
@@ -25,19 +24,44 @@ public class Main {
 		
 		transaction.begin();
 		
-	   Query q=em.createQuery("select e from Employee e where e.name=:name");
-	   
-	   q.setParameter("name", "def");
-	   
-	   Employee emp=(Employee)q.getSingleResult();
+	  //  Student st=em.find(Student.class, 1);
+	    
+	    //System.out.println(st.getName());
 		
-	   System.out.println(emp.getId());
-	   System.out.println(emp.getName());
-	   System.out.println(emp.getSalary());
-	  
+		Subject sub1=new Subject();
+		sub1.setName("java");
+		
+		Subject sub2=new Subject();
+		sub2.setName("mysql");
+		
+		
+		Student st1=new Student();
+		st1.setName("abc");
+		
+		st1.setSubjectList(Arrays.asList(sub1,sub2));
+		
+		
+		Student st2=new Student();
+		
+		st2.setName("def");
+		
+		st2.setSubjectList(Arrays.asList(sub1));
+		
+		sub1.setStudentList(Arrays.asList(st1,st2));
+		
+		sub2.setStudentList(Arrays.asList(st1));
+		
+		em.persist(st1);
+		
+		em.persist(st2);
+		
+			
 		
 		transaction.commit();
 		em.close();
+		
+		 //System.out.println(st.getSubjectList().get(0).getName());
+			//System.out.println(st.getSubjectList().get(1).getName());
 		
 		emf.close();
 		
